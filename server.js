@@ -1,26 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(express.json()); // Parse JSON bodies
+app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error(' MongoDB connection error:', err));
 
-// ✅ Import routes
+// Import routes
 const customerRoutes = require('./routes/customers');
-
-// ✅ Use router for all /api/customers routes
-app.use('/api/customers', customerRoutes);
 const productRoutes = require('./routes/products');
-app.use('/api/products', productRoutes);
+const orderRoutes = require('./routes/orders');
 
-// ✅ Start server
+
+// Use routes
+app.use('/api/customers', customerRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+
+app.get('/', (req, res) => {
+  res.send('API is running ');
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });

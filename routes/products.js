@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
 
-// POST: Create product
+// ✅ TEST ROUTE to verify router is working
+router.get('/test', (req, res) => {
+  res.json({ message: '✅ Products route is working!' });
+});
+
+// ✅ POST: Create product
 router.post('/', async (req, res) => {
   try {
     const product = new Product(req.body);
@@ -13,7 +18,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET: List products
+// ✅ GET: List products
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
@@ -23,7 +28,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// DELETE: Remove product
+// ✅ DELETE: Remove product
 router.delete('/:id', async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
